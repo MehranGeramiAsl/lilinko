@@ -14,3 +14,14 @@ class User(AbstractUser):
     otp = models.CharField(max_length=255,default=None)
     otp_date = models.DateTimeField(auto_now=True)
     otp_used = models.BooleanField(default=True)
+
+
+class UserToken(models.Model):
+    user_id = models.IntegerField()
+    token = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    expired_at = models.DateTimeField()
+
+class ResetPassword(models.Model):
+    email = models.CharField(max_length=255)
+    token = models.CharField(max_length=255,unique=True)
