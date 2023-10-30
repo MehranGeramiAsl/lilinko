@@ -11,7 +11,7 @@ class User(AbstractUser):
     username = models.CharField(max_length=255,unique=True,null=True,blank=True)
     phone = models.CharField(max_length=17,unique=True,null=True,blank=True)
     tfa_secret = models.CharField(max_length=255,default='')
-    otp = models.CharField(max_length=255,default=None)
+    otp = models.CharField(max_length=255,null=True,default=None)
     otp_date = models.DateTimeField(auto_now=True)
     otp_used = models.BooleanField(default=True)
 

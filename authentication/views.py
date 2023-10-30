@@ -29,12 +29,12 @@ class RegisterAPIView(APIView):
 class LoginAPIView(APIView):
     def __init__(self):
         # Select Between otp email username
-        self.auth_method = "otp"
-        self.tfa_enabled = True
+        self.auth_method = "email"
+        self.tfa_enabled = False
 
     def generate_token(self,id):
         access_token = create_access_token(id)
-        refresh_token = create_refresh_token(id)
+        refresh_token = create_refresh_token(id).decode('utf-8')
         UserToken.objects.create(user_id = id,token=refresh_token,expired_at = datetime.datetime.utcnow() + datetime.timedelta(days=7))
         response = Response()
         response.set_cookie(key='refresh_token',value=refresh_token,httponly=True)
