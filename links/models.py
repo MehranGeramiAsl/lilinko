@@ -15,7 +15,10 @@ class LinkCategories(models.Model):
     title = models.CharField(max_length=100,null=False,blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+    link = models.ManyToManyField(Link,related_name="link")
+    link_provider = models.ManyToManyField("LinkProvider",related_name="link_provider")
+
+
 class LinkProvider(models.Model):
     provider = models.ForeignKey(User,on_delete=models.CASCADE)
     link = models.ForeignKey(Link,on_delete=models.CASCADE)
@@ -23,3 +26,4 @@ class LinkProvider(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True,null=False,blank=False)
     price = models.BigIntegerField(default=0)
+
