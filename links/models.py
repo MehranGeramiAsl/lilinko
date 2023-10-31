@@ -27,3 +27,6 @@ class LinkProvider(models.Model):
     is_active = models.BooleanField(default=True,null=False,blank=False)
     price = models.BigIntegerField(default=0)
 
+class LinkRequest(models.Model):
+    link_provider = models.ForeignKey(LinkProvider,on_delete=models.CASCADE)
+    
