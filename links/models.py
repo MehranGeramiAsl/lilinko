@@ -7,8 +7,8 @@ class Link(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     comment = models.CharField(max_length=255,blank=True,default=None)
-    dr = models.SmallIntegerField(default=0)
-    traffic = models.BigIntegerField(default=0)
+    dr = models.SmallIntegerField(default=0) # Field for domain rate
+    traffic = models.BigIntegerField(default=0) # Field for storing traffic data
 
 class LinkCategories(models.Model):
     title = models.CharField(max_length=100,null=False,blank=False)
