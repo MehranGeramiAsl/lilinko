@@ -17,6 +17,7 @@ class LinkList(generics.ListAPIView):
 
 class LinkSearch(generics.ListAPIView):
     serializer_class = serializers.LinkSerializer
+    filter_backends = [DjangoFilterBackend]
     filterset_class = LinkFilter
     pagination_class = LinkPagination
 
