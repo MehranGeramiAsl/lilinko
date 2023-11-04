@@ -15,7 +15,7 @@ class LinkCategories(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     link = models.ManyToManyField(Link,related_name="link")
-    link_provider = models.ManyToManyField("LinkProvider",related_name="link_provider")
+    # link_provider = models.ManyToManyField("LinkProvider",related_name="link_provider")
 
 
 class LinkProvider(models.Model):
