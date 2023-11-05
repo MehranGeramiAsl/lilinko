@@ -19,24 +19,29 @@ class LinkProviderSerializer(serializers.ModelSerializer):
 class LinkSerializer(serializers.ModelSerializer):
     categories = LinkCategoriesSerializer(source='link', read_only=True,many=True)
     provider= LinkProviderSerializer(source='linkprovider_set', many=True, read_only=True)
-    
+
+    def extract_domain(self,url):
+        url = url.replace("http://","")
+        url = url.replace("https://","")
+        url = url.replace("www.","")
+        url = url.replace(" ","")
+        url = "http://" + url
+        parsed_url = urlparse(url)
+        domain = parsed_url.netloc
+        return domain
+
     def validate_url(self,value):
         try:
-            value = urlparse(value)
-            print(value)
-            value = value.path
-            value = value.replace("/","")
-            value = value.replace("\\","")
+            value = self.extract_domain(value)
         except Exception as e:
             print(e)
             raise serializers.ValidationError("Invalid URL. Please provide a valid internet URL.")
         return value
+    
+    
     class Meta:
         model = Link
         fields = "__all__"
+        
 
-    # def get_categories(self, obj):
-    #     # Fetch and serialize LinkCategories related to the current Link object
-    #     categories = obj.linkcategories_set.all()
-    #     serializer = LinkCategoriesSerializer(categories, many=True)
-    #     return serializer.data
+

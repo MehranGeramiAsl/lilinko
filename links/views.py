@@ -31,6 +31,19 @@ class LinkAV(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    
+    # def delete(self,request,pk):
+    #     try:
+    #         link = Link.objects.get(pk=pk)
+    #     except Link.DoesNotExist:
+    #         return Response({"error":"Link not found"},status=status.HTTP_404_NOT_FOUND)
+        
+    #     serializer = serializers.LinkSerializer(link,data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data)
+    #     else:
+    #         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
     
     
