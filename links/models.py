@@ -3,10 +3,10 @@ from authentication.models import User
 
 
 class Link(models.Model):
-    url = models.CharField(max_length=255,null=False,blank=False)
+    url = models.CharField(max_length=255,null=False,blank=False,unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    comment = models.CharField(max_length=255,blank=True,default=None)
+    comment = models.CharField(max_length=255,blank=True,null=True,default=None)
     dr = models.SmallIntegerField(default=0) # Field for domain rate
     traffic = models.BigIntegerField(default=0) # Field for storing traffic data
 

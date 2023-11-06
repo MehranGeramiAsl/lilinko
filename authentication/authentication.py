@@ -18,7 +18,7 @@ class JWTAuthentication(BaseAuthentication):
 def create_access_token(id):
     return jwt.encode({
         'user_id':id,
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=30),
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=300000),
         'iat':  datetime.datetime.utcnow()
     },settings.ACCESS_TOKEN_SECRET,algorithm='HS256')
     
@@ -26,7 +26,8 @@ def decode_access_token(token):
     try:
         payload = jwt.decode(token,settings.ACCESS_TOKEN_SECRET,algorithms='HS256')
         return payload['user_id']
-    except:
+    except Exception as e:
+        print(e)
         raise exceptions.AuthenticationFailed('unathenticated')
         
     

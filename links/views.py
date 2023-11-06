@@ -9,8 +9,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from links.models import Link   
+from authentication.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 class LinkAV(APIView):
+    authentication_classes = [JWTAuthentication]
+    # permission_classes = [IsAuthenticated]
+
     def get(self,request,pk):
         try:
             link = Link.objects.get(pk=pk)
@@ -19,6 +24,23 @@ class LinkAV(APIView):
         
         serializer = serializers.LinkSerializer(link)
         return Response(serializer.data)
+    
+    def post(self,request):
+        data = request.data.copy()
+        data['provider'] = request.user.id
+        url = data['url']
+        try:
+            link = Link.objects.get(url=url)
+            serializer = serializers.LinkSerializer(link,data=data)
+        except:
+            serializer = serializers.LinkSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save(provider = request.user,price = data["price"])
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors)
+        
+    
     def put(self,request,pk):
         try:
             link = Link.objects.get(pk=pk)
