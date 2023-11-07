@@ -35,7 +35,7 @@ class LinkAV(APIView):
         except:
             serializer = serializers.LinkSerializer(data=data)
         if serializer.is_valid():
-            serializer.save(provider = request.user,price = data["price"])
+            serializer.save(provider = request.user,categories = data["categories"],price = data["price"])
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
