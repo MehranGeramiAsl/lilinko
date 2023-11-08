@@ -38,16 +38,17 @@ class LinkSerializer(serializers.ModelSerializer):
     def update(self,link,validated_data):
         price = validated_data.pop('price',0)
         provider = validated_data.pop('provider', None)
-        link_provider = LinkProvider.objects.filter(provider=provider,link=link)
-        if link_provider.exists():
-            link_provider = link_provider.first()
-            link_provider.price = price
-            link_provider.save()
-            return link
-        else:
-            LinkProvider.objects.create(provider=provider,link=link,price=price)
-            return link
-    
+        if provider != None:
+            link_provider = LinkProvider.objects.filter(provider=provider,link=link)
+            if link_provider.exists():
+                link_provider = link_provider.first()
+                link_provider.price = price
+                link_provider.save()
+                return link
+            else:
+                LinkProvider.objects.create(provider=provider,link=link,price=price)
+                return link
+
     
         price = validated_data.pop('price',0)
         provider = validated_data.pop('provider', None)

@@ -46,7 +46,7 @@ class LoginAPIView(APIView):
     
     def generate_tfa_secret(self,id):
         secret = pyotp.random_base32()
-        otpauth_url = pyotp.totp.TOTP(secret).provisioning_uri(issuer_name = 'My App')
+        otpauth_url = pyotp.totp.TOTP(secret).provisioning_uri(issuer_name = 'Lilinko')
         return Response({
             'tfa_status':self.tfa_enabled,
             'tfa_set':False,

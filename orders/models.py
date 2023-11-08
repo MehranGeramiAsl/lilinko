@@ -4,7 +4,7 @@ from authentication.models import User
 
 
 
-class LinkRequest(models.Model):
+class LinkOrder(models.Model):
     REQUEST_STATUS_CHOICES = [
     ("NS", "Not Specified"),
     ("A", "Accept"),
@@ -14,9 +14,9 @@ class LinkRequest(models.Model):
     ]
 
     link_provider = models.ForeignKey(LinkProvider,on_delete=models.CASCADE)
-    link = models.ForeignKey(Link,on_delete=models.CASCADE)
+    # link = models.ForeignKey(Link,on_delete=models.CASCADE)
     buyer = models.ForeignKey(User,on_delete=models.CASCADE,related_name="buyer")
-    seller = models.ForeignKey(User,on_delete=models.CASCADE,related_name="seller")
+    # seller = models.ForeignKey(User,on_delete=models.CASCADE,related_name="seller")
     seller_status = models.CharField(max_length=2,choices=REQUEST_STATUS_CHOICES,default="NS")
     buyer_status = models.CharField(max_length=2,choices=REQUEST_STATUS_CHOICES,default="NS")
     initial_price = models.BigIntegerField(default=0)
