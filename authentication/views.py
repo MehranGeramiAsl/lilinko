@@ -34,7 +34,7 @@ class LoginAPIView(APIView):
 
     def generate_token(self,id):
         access_token = create_access_token(id)
-        refresh_token = create_refresh_token(id).decode('utf-8')
+        refresh_token = create_refresh_token(id)
         UserToken.objects.create(user_id = id,token=refresh_token,expired_at = datetime.datetime.utcnow() + datetime.timedelta(days=7))
         response = Response()
         response.set_cookie(key='refresh_token',value=refresh_token,httponly=True)
