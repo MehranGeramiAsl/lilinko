@@ -39,6 +39,8 @@ class OrderSerializer(serializers.ModelSerializer):
         order.proposed_meta_description = validated_data.pop("proposed_meta_description",order.proposed_meta_description)
         order.save()
         return order
+    
+
     class Meta:
         model = LinkOrder
         fields = "__all__"

@@ -23,6 +23,8 @@ class OrderAV(APIView):
             return [IsAuthenticated(), IsBuyerOrSeller()]
         elif self.request.method == 'PUT':
             return [IsAuthenticated(), IsBuyer()]
+        elif self.request.method == 'DELETE':
+            return [IsAuthenticated(), IsBuyer()]
         return [IsAuthenticated()]
 
     def get(self,request,pk):
@@ -74,7 +76,7 @@ class OrderAV(APIView):
     
     def delete(self,request,pk):
         try:
-            link = Link.objects.get(id=pk)
+            link = LinkOrder.objects.get(id=pk)
             link.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except:
