@@ -3,8 +3,8 @@ from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from orders import serializers
 from orders.models import LinkOrder
-from links.pagination import LinkPagination
-from links.filters import LinkFilter
+from orders.pagination import OrderPagination
+from orders.filters import OrderFilter
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -81,3 +81,18 @@ class OrderAV(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except:
             return Response(status=status.HTTP_204_NO_CONTENT)
+        
+class OrderSearch(generics.ListAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.OrderSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = OrderFilter
+    # pagination_class = OrderPagination
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = LinkOrder.objects.filter(buyer = user)
+        return queryset
+
+    

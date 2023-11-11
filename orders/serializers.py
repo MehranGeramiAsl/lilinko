@@ -44,3 +44,9 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = LinkOrder
         fields = "__all__"
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['buyer'] = instance.buyer.id if instance.buyer else None
+        representation['link_provider'] = instance.link_provider.id if instance.link_provider else None
+        return representation
