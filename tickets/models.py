@@ -16,3 +16,7 @@ class Ticket(models.Model):
     status = models.CharField(max_length=2,choices=TICKET_STATUS_CHOICES,default="O")
     owner = models.ForeignKey(User,on_delete=models.CASCADE)
 
+
+class TicketContent(models.Model):
+    content = models.TextField()
+    ticket = models.ForeignKey(Ticket,on_delete=models.CASCADE)
