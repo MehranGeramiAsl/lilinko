@@ -82,7 +82,8 @@ class OrderAV(APIView):
         except:
             return Response(status=status.HTTP_204_NO_CONTENT)
         
-class OrderSearch(generics.ListAPIView):
+
+class BuyerOrderSearch(generics.ListAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.OrderSerializer
@@ -92,7 +93,21 @@ class OrderSearch(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = LinkOrder.objects.filter(buyer = user)
+        queryset = LinkOrder.objects.filter(buyer=user)
+        return queryset
+
+
+class ProviderOrderSearch(generics.ListAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.OrderSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = OrderFilter
+    # pagination_class = OrderPagination
+
+    def get_queryset(self):
+        user = self.request.user
+        queryset = LinkOrder.objects.filter(link_provider__provider=user)
         return queryset
 
     
