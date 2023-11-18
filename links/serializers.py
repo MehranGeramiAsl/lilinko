@@ -61,7 +61,6 @@ class LinkSerializer(serializers.ModelSerializer):
         else:
             LinkProvider.objects.create(provider=provider,link=link,price=price)
             return link
-
     
     def extract_domain(self,url):
         url = url.replace("http://","")
@@ -88,3 +87,10 @@ class LinkSerializer(serializers.ModelSerializer):
         
 
 
+class LinkListSerializer(serializers.ModelSerializer):
+    categories = LinkCategoriesSerializer(many=True,read_only=True)
+    provider= LinkProviderSerializer(source='linkprovider_set', many=True,write_only=True)
+    class Meta:
+        model = Link
+        fields = "__all__"
+        

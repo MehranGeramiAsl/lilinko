@@ -68,14 +68,13 @@ class LinkAV(APIView):
 class LinkList(generics.ListAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
-    serializer_class = serializers.LinkSerializer
+    serializer_class = serializers.LinkListSerializer
     pagination_class = LinkPagination
 
     def get_queryset(self):
         user = self.request.user
         link_providers = LinkProvider.objects.filter(provider=user)
-        links_for_provider = link_providers.values_list('link', flat=True)
-        print(links_for_provider)
+        links_for_provider = link_providers.values_list('link')
         queryset = Link.objects.filter(pk__in=links_for_provider)
         return queryset
 
