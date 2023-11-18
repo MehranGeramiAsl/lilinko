@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from links import serializers
-from links.models import Link
+from links.models import Link,LinkProvider
 from links.pagination import LinkPagination
 from links.filters import LinkFilter
 from rest_framework.views import APIView
@@ -66,14 +66,23 @@ class LinkAV(APIView):
     
     
 class LinkList(generics.ListAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     serializer_class = serializers.LinkSerializer
     pagination_class = LinkPagination
 
     def get_queryset(self):
-        return Link.objects.all()
+        user = self.request.user
+        link_providers = LinkProvider.objects.filter(provider=user)
+        links_for_provider = link_providers.values_list('link', flat=True)
+        print(links_for_provider)
+        queryset = Link.objects.filter(pk__in=links_for_provider)
+        return queryset
 
 
 class LinkSearch(generics.ListAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     serializer_class = serializers.LinkSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = LinkFilter

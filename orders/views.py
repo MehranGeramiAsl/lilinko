@@ -83,7 +83,7 @@ class OrderAV(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         
 
-class BuyerOrderSearch(generics.ListAPIView):
+class BuyerOrderList(generics.ListAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.OrderSerializer
@@ -97,7 +97,7 @@ class BuyerOrderSearch(generics.ListAPIView):
         return queryset
 
 
-class ProviderOrderSearch(generics.ListAPIView):
+class ProviderOrderList(generics.ListAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.OrderSerializer
