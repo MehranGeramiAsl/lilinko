@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'links',
     'orders',
     'tickets',
+    'notifications',
 ]
 
 MIDDLEWARE = [
