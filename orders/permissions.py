@@ -10,3 +10,9 @@ class IsBuyer(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         user = request.user
         return user == obj.buyer
+
+class IsSeller(permissions.BasePermission):
+    '''Only allow access to order that you are Seller'''
+    def has_object_permission(self, request, view, obj):
+        user = request.user
+        return user == obj.link_provider.provider

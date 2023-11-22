@@ -11,7 +11,7 @@ from rest_framework import status
 # from links.models import Link   
 from authentication.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
-from orders.permissions import IsBuyerOrSeller,IsBuyer
+from orders.permissions import IsBuyerOrSeller,IsBuyer,IsSeller
 
 
 class OrderAV(APIView):
@@ -43,13 +43,7 @@ class OrderAV(APIView):
             link_provider = request.data["link_provider"]
         except Exception as e:
             raise serializers.serializers.ValidationError({"success":False,"errors":e})
-        
-        print(link_provider)
-
-        # url = data['url']
         try:
-            # order = Link.objects.get(url=url)
-        
             serializer = serializers.OrderSerializer(data=request.data)
         except Exception as e:
             print(e)
@@ -64,7 +58,7 @@ class OrderAV(APIView):
     def put(self,request,pk):
         try:
             order = LinkOrder.objects.get(pk=pk)
-        except order.DoesNotExist:
+        except:
             return Response({"success":False,"errors":"Order not found"},status=status.HTTP_404_NOT_FOUND)
         
         serializer = serializers.OrderSerializer(order,data=request.data)
@@ -82,7 +76,48 @@ class OrderAV(APIView):
         except:
             return Response(status=status.HTTP_204_NO_CONTENT)
         
+class OrderPriceAV(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
+    def get_permissions(self):
+        if self.request.method == 'PUT':
+            return [IsAuthenticated(), IsSeller()]
+        return [IsAuthenticated()]
+    
+    def put(self,request,pk):
+        try:
+            order = LinkOrder.objects.get(pk=pk)
+        except:
+            return Response({"success":False,"errors":"Order not found"},status=status.HTTP_404_NOT_FOUND)
+        serializer = serializers.OrderPriceSerializer(order,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+class OrderSellerStatusAV(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_permissions(self):
+        if self.request.method == 'PUT':
+            return [IsAuthenticated(), IsSeller()]
+        return [IsAuthenticated()]
+    
+    def put(self,request,pk):
+        try:
+            order = LinkOrder.objects.get(pk=pk)
+        except:
+            return Response({"success":False,"errors":"Order not found"},status=status.HTTP_404_NOT_FOUND)
+        serializer = serializers.OrderSellerStatusSerializer(order,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+         
 class BuyerOrderList(generics.ListAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]

@@ -27,6 +27,6 @@ class LinkProvider(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True,null=False,blank=False)
-    price = models.BigIntegerField(default=0)
+    price = models.FloatField(default=0)
 
 
