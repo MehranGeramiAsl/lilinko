@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'links',
     'orders',
     'tickets',
-    'notifications',
+    # 'notifications',
 ]
 
 MIDDLEWARE = [
@@ -76,7 +76,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'lilinko.wsgi.application'
-ASGI_APPLICATION = 'lilinko.asgi.application'
+# ASGI_APPLICATION = 'lilinko.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
